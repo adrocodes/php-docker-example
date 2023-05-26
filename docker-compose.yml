@@ -1,0 +1,34 @@
+version: '3'
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/nginx.conf
+      - ./public:/php-docker-example/public
+    depends_on:
+      - mysql
+      - php
+    restart: always
+  php:
+    build:
+      context: .
+      dockerfile: PHP.Dockerfile
+    volumes:
+      - ./public:/php-docker-example/public
+    restart: always
+  mysql:
+    image: mariadb:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: 'password'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_DATABASE: 'php-docker-example'
+    volumes:
+      - database:/var/lib/mysql
+    ports:
+      - 3306:3306
+    restart: always
+volumes:
+  database: {}

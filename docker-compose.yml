@@ -30,5 +30,12 @@ services:
     ports:
       - 3306:3306
     restart: always
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+    ports:
+      - 8081:80
 volumes:
   database: {}
